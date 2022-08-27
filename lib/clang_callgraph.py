@@ -167,7 +167,6 @@ def main():
 
     cfg = read_args(sys.argv)
     if cfg is None:
-        usage()
         return
 
     print('reading source files...')
