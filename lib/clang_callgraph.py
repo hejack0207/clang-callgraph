@@ -133,6 +133,9 @@ def read_args(args):
     excluded_paths = ['/usr']
     i = 0
     while i < len(args):
+        if args[i] == '-h':
+            usage()
+            return None
         if args[i] == '-x':
             i += 1
             excluded_prefixes = args[i].split(',')
@@ -152,13 +155,20 @@ def read_args(args):
     }
 
 
+def usage():
+    print('usage: ' + sys.argv[0] + ' file.cpp|compile_database.json '
+          '[extra clang args...]')
+    return
+
 def main():
     if len(sys.argv) < 2:
-        print('usage: ' + sys.argv[0] + ' file.cpp|compile_database.json '
-              '[extra clang args...]')
+        usage()
         return
 
     cfg = read_args(sys.argv)
+    if cfg is None:
+        usage()
+        return
 
     print('reading source files...')
     for cmd in read_compile_commands(cfg['db']):
